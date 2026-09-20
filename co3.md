@@ -77,7 +77,7 @@ ffi! {
 }
 ```
 
-### 2. The Type Mapping Space Is Complete
+### 2. No Type Left Behind
 
 Using `CO3` must introduce as little friction as possible:
 
