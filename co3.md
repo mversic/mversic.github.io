@@ -51,7 +51,7 @@ Let's see how that looks in practice:
 use co3::{ReprC, ffi};
 use rust_spec::RustSpec;
 
-type Header = [u32; 4];
+type Header = Header;
 
 #[derive(RustSpec, ReprC)]
 #[repr(C)]
