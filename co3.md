@@ -28,7 +28,7 @@ _For Art and Science cannot exist but in minutely organized Particulars, And not
 
 Imagine someone had told you there was work underway to add an extension to the Rust programming language that would make it possible to use **generics in FFI**. Not only that—imagine you were told it would be possible to **directly export your Rust code** across the FFI boundary without ever "feeling" the boundary. Strong claims, you would say. Moreover, who is this person, and why should you even listen to them?
 
-I know I can't provide you with any satisfying credentials to my name, but I can let the excellence of the work speak for itself. I hope that, by the end of this article, I will have justified a strong claim that this *is not yet another FFI framework*, but a general model that **unifies all attempts to solve the bidirectional interfacing** and mapping of types between Rust and the C ABI. Specifically, via the same declaration and conversion model, not all of which are discussed in the article, `CO3` covers:
+I can't provide you with any satisfying credentials to my name, but I can let the excellence of the work speak for itself. I hope that, by the end of this article, I will have justified a strong claim that this *is not yet another FFI framework*, but a general model that **unifies all attempts to solve the bidirectional interfacing** and mapping of types between Rust and the C ABI. Specifically, via the same declaration and conversion model, not all of which are discussed in the article, `CO3` covers:
 
 - **Imports and exports** of functions, statics, methods, and opaque types, with configurable ABIs and conditional compilation.
 - **The Rust type space**: native sized and dynamically sized types, including those with `#[repr(Rust)]` layout.
@@ -48,10 +48,9 @@ The library was sculpted around the following rules:
 Let's see how that looks in practice:
 
 ```rust
-use co3::{ReprC, ffi};
-use rust_spec::RustSpec;
+use co3::{ffi, rust_spec::RustSpec, ReprC};
 
-type Header = Header;
+type Header = [u32; 4];
 
 #[derive(RustSpec, ReprC)]
 #[repr(C)]
@@ -71,7 +70,7 @@ ffi! {
     #![unsafe(export("C"))]
 
     impl Packet<u32> {
-        // `export_name` is inferred
+        // The symbol name is inferred
         fn header(&self) -> &Header;
     }
 }
@@ -85,8 +84,7 @@ Using `CO3` must introduce as little friction as possible:
 - The framework must make it possible to declare **extern (i.e. opaque) types**.
 
 ```rust
-use co3::{ReprC, ffi};
-use rust_spec::RustSpec;
+use co3::{ffi, rust_spec::RustSpec, ReprC};
 
 // An ordinary `repr(Rust)` struct
 #[derive(Clone, Copy, RustSpec, ReprC)]
@@ -177,7 +175,7 @@ ffi! {
     //
     // Without moving the return value, the export would fail to compile
     // (it's not possible to return a reference to temporary storage).
-    move fn round_trip(move bytes: Vec<u8>) -> Vec<u8>;
+    fn round_trip(bytes: move Vec<u8>) -> move Vec<u8>;
 }
 ```
 
