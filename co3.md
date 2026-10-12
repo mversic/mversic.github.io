@@ -19,7 +19,7 @@ _When I first started thinking about FFI more than three years ago, I was riding
 
 At the time, I was working at Soramitsu, a company developing its own blockchain ledger. Not that I cared much about the field, but it provided me with the opportunity to write Rust while making a living.
 
-It was my long-standing desire to enter the space of systems programming, and I knew I would never trust myself enough to write C++. More importantly, in my eyes, the code written in Rust held so much more elegance compared to its well-established precursors. The aesthetic of expression was always one of the primary drives in my life.
+It was my long standing desire to enter the space of systems programming, and I knew I would never trust myself enough to write C++. More importantly, in my eyes, the code written in Rust held so much more elegance compared to its well established precursors. The aesthetic of expression was always one of the primary drives in my life.
 
 ## Pay Attention to Minute Particulars
 
@@ -28,14 +28,7 @@ _For Art and Science cannot exist but in minutely organized Particulars, And not
 
 Imagine someone had told you there was work underway to add an extension to the Rust programming language that would make it possible to use **generics in FFI**. Not only that—imagine you were told it would be possible to **directly export your Rust code** across the FFI boundary without ever "feeling" the boundary. Strong claims, you would say. Moreover, who is this person, and why should you even listen to them?
 
-I can't provide you with any satisfying credentials to my name, but I can let the excellence of the work speak for itself. I hope that, by the end of this article, I will have justified a strong claim that this *is not yet another FFI framework*, but a general model that **unifies all attempts to solve the bidirectional interfacing** and mapping of types between Rust and the C ABI. Specifically, via the same declaration and conversion model, not all of which are discussed in the article, `CO3` covers:
-
-- **Imports and exports** of functions, statics, methods, and opaque types, with configurable ABIs and conditional compilation.
-- **The Rust type space**: native sized and dynamically sized types, including those with `#[repr(Rust)]` layout.
-- **Representation and validity**: size and alignment, niches, trap values, pointee validation, and custom invariants.
-- **Value-passing semantics**: borrowing, cloning, ownership transfer, `#[soft]` conversions with mutable writeback.
-- **Polymorphism**: static monomorphization and runtime tag dispatch, with customizable erasure and tag placement.
-- **C ABI adaptation**: configurable symbol naming, compound-value unpacking, and configurable failure handling.
+While I can't provide you with any satisfying credentials to my name, I can let the excellence of the work speak for itself. I hope that, by the end of this article, I will have justified a strong claim that this *is not yet another FFI framework*, but a general model that **unifies all attempts to solve the bidirectional interfacing** and mapping of types between Rust and the C ABI.
 
 ### 1. Abstractions Are Zero-Cost by Default
 
@@ -142,8 +135,8 @@ fn main() {
 
 As far as `CO3` is concerned, the default API **MUST** enforce all soundness guarantees within its control, even at the expense of the zero-cost abstraction principle. The big caveat is that this guarantee rests on the assumption that unsafe FFI declarations accurately describe the foreign implementation. Opt-in conversion modes make the costs of preserving soundness, and any additional guarantees, explicit. **Therefore:**
 
-- Values are lowered to robust C-compatible representations and checked for trap values (including pointees).
-- **Ownership transfer is opt-in**: owned values are borrowed and cloned on import unless marked `move`.
+- Values are lowered to C-compatible representations and checked for traps (including pointees).
+- **Ownership transfer is opt-in**: owned values are borrowed and cloned on import unless `move`d.
 - References that cannot be safely converted in place require an explicit `#[soft]` opt-in.
 
 ```rust
@@ -354,16 +347,3 @@ Before we close, I want to express my **deepest and most humble gratitude** to m
 Further, I want to express appreciation for my sister, my mother, my late father, and my family and friends for all the wonderful, and sometimes not-so-wonderful, times we had together. Furthermore, I am grateful to my teachers, my neighbours, my employers and business associates, even my foes and enemies, and, in general, anyone I have ever crossed paths with.
 
 A truly creative work draws inspiration from and can only come from **the totality of one's lived experience**.
-
-### When We Free Ourselves
-
-_We are not freed into a void, we are freed into the dimension in which art is an obligation._\
-— Terence McKenna, [*Dreaming Awake at the End of Time*](https://www.organism.earth/library/document/dreaming-awake-at-the-end-of-time)
-
-As all of us are aware, while living inside an economy, it is difficult to provide meaningful work of great depth and beauty that is devoid of all financial incentives. If you appreciate the effort and find the work, if not foundational, at least valuable, consider **providing a small donation**.
-
-#### The Fine Print
-
-For legal reasons, I am obliged to make the following painfully explicit: the library is **freely available under its open-source license** regardless of whether you provide financial support.
-
-Any payment is **entirely voluntary**, is not payment for the development of the software, and **does not entitle the donor** to support, maintenance, consulting, feature development, additional licensing rights, advertising, priority treatment, or any other goods or services. A donation **does not create any obligation** to continue developing, maintaining, or supporting the library.
