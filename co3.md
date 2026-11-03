@@ -26,9 +26,9 @@ It was my long standing desire to enter the space of systems programming, and I 
 _For Art and Science cannot exist but in minutely organized Particulars, And not in generalizing Demonstrations of the Rational Power._\
 — William Blake, [*Jerusalem*, Chapter 3, plate 55](https://blake.lib.asu.edu/html/jerusalem.html)
 
-Imagine someone had told you there was work underway to add an extension to the Rust programming language that would make it possible to use **generics in FFI**. Not only that—imagine you were told it would be possible to **directly export your Rust code** across the FFI boundary without ever "feeling" the boundary. Strong claims, you would say. Moreover, who is this person, and why should you even listen to them?
+Imagine someone had told you there was work underway to add an extension to the Rust programming language that would make it possible to use **generics in FFI**. Not only that—imagine you were told it would be possible to **directly export your Rust code** across the FFI boundary through _stable ABI_ without ever "feeling" the boundary. Strong claims, you would say. Moreover, who is this person, and why should you even listen to them?
 
-While I can't provide you with any satisfying credentials to my name, I can let the excellence of the work speak for itself. I hope that, by the end of this article, I will have justified a strong claim that this *is not yet another FFI framework*, but a general model that **unifies all attempts to solve the bidirectional interfacing** and mapping of types between Rust and the C ABI.
+While I can't provide you with any satisfying credentials to my name, I can let the excellence of the work speak for itself. I hope that, by the end of this article, I will have justified a strong claim that this *is not yet another FFI framework*, but a general model that aims to **unify all attempts to solve the stable bidirectional interfacing** and mapping of types between Rust and the C ABI.
 
 ### 1. Abstractions Are Zero-Cost by Default
 
